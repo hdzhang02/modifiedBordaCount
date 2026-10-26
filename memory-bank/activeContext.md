@@ -20,3 +20,4 @@ None required for the first implementation.
 ## Implementation notes
 - `dist/index.html` is the self-contained distributable application.
 - The supplied legacy-format example cannot be parsed by SheetJS despite its `.xlsx` extension; its rows are retained as a domain regression fixture after being inspected in Excel.
+- `README.md` is written for non-technical election officers and documents downloading Google Sheets responses, using `dist/index.html`, reviewing warnings, and exporting results.

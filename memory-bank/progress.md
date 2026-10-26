@@ -8,6 +8,7 @@
 - Scoring engine, spreadsheet column detection, browser UI, audit table and CSV export implemented.
 - Unit tests cover No Vote precedence, executive doubling, wrong keys, invalid ranks, ties, and the complete example response data.
 - Production build creates a single `dist/index.html` file.
+- Plain-English operator instructions are available in the root `README.md`.
 
 ## In progress
 None.
