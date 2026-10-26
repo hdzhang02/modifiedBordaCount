@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="An offline ranked-vote counter for modified Borda Count elections." />
+    <title>Ranked Vote Counter</title>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="hero">
+        <p class="eyebrow">Offline election tool</p>
+        <h1>Ranked Vote Counter</h1>
+        <p>Calculate a modified Borda Count from Google Forms or Google Sheets responses. Your file and executive password stay in this browser.</p>
+      </header>
+
+      <noscript><p class="notice error">JavaScript is required to calculate the count.</p></noscript>
+      <div id="app"></div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
