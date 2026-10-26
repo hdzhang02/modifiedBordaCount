@@ -9,6 +9,8 @@
 - Unit tests cover No Vote precedence, executive doubling, wrong keys, invalid ranks, ties, and the complete example response data.
 - Production build creates a single `dist/index.html` file.
 - Plain-English operator instructions are available in the root `README.md`.
+- Branding and usability updates: AU Student Chamber Orchestra presidential-tool heading and a post-result reload/reset note.
+- Added responsive AUSCO horizontal logo branding and Email Address visibility in the local ballot audit.
 
 ## In progress
 None.

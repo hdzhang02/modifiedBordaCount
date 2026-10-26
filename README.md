@@ -97,7 +97,7 @@ Read the yellow **Review required** section before accepting a result.
 - If somebody entered a key that does not match the Executive password, their ballot counts as a normal vote and is shown as a warning.
 - If candidates have the same total score, they share the same position. The tool does not apply a tie-break rule.
 
-For a detailed check, open **Ballot audit** below the results. It shows how every imported response was classified and whether it was given a weight of `1×` or `2×`.
+For a detailed check, open **Ballot audit** below the results. It shows the email address from every imported response, how each response was classified, and whether it was given a weight of `1×` or `2×`. This makes it possible to cross-check the count against the source sheet. Email addresses remain in the local browser session and are not included in the downloaded results CSV.
 
 ## 8. Save the result
 

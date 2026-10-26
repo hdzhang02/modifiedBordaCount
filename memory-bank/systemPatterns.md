@@ -16,3 +16,5 @@ Candidates are sorted ascending by total. Equal totals receive the same displaye
 
 ## Import pattern
 Candidate names are captured from headers matching `ranking for <candidate>` (case-insensitive). No Vote and executive key columns are similarly detected from their headers. The parsed response table ends at the last detected input column, ignoring manual helper columns on the right.
+
+Email Address is auto-detected as a separate optional mapping. It is propagated to the local ballot audit only; it has no role in validation or scoring and is not included in the downloadable results CSV.

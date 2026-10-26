@@ -31,6 +31,12 @@ describe('countVotes', () => {
     expect(result.ballots[0].warning).toContain('non-matching');
   });
 
+  it('keeps the email address in the ballot audit without using it to score the vote', () => {
+    const result = countVotes([{ rowNumber: 2, emailAddress: 'voter@example.org', ranks: [1, 3, 2] }], options);
+    expect(result.ballots[0].emailAddress).toBe('voter@example.org');
+    expect(result.candidates[0].total).toBe(1);
+  });
+
   it('excludes repeated, missing and out-of-range ranks', () => {
     const result = countVotes([
       { rowNumber: 2, ranks: [1, 1, 3] },

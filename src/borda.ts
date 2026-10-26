@@ -2,6 +2,7 @@ export type BallotStatus = 'valid' | 'no-vote' | 'invalid';
 
 export interface RawBallot {
   rowNumber: number;
+  emailAddress?: string | number | null;
   ranks: Array<string | number | null | undefined>;
   noVoteValue?: string | number | null;
   executiveKey?: string | number | null;
@@ -15,6 +16,7 @@ export interface CountOptions {
 
 export interface BallotAudit {
   rowNumber: number;
+  emailAddress: string;
   status: BallotStatus;
   multiplier: 1 | 2;
   ranks: Array<number | null>;
@@ -74,7 +76,7 @@ export function countVotes(ballots: RawBallot[], options: CountOptions): CountRe
   for (const ballot of ballots) {
     if (cellText(ballot.noVoteValue) !== '') {
       noVoteBallots += 1;
-      audits.push({ rowNumber: ballot.rowNumber, status: 'no-vote', multiplier: 1, ranks: [], adjustedRanks: [] });
+      audits.push({ rowNumber: ballot.rowNumber, emailAddress: cellText(ballot.emailAddress), status: 'no-vote', multiplier: 1, ranks: [], adjustedRanks: [] });
       continue;
     }
 
@@ -82,7 +84,7 @@ export function countVotes(ballots: RawBallot[], options: CountOptions): CountRe
     const invalidReason = validateRanks(ranks, candidateNames.length);
     if (invalidReason) {
       invalidBallots += 1;
-      audits.push({ rowNumber: ballot.rowNumber, status: 'invalid', multiplier: 1, ranks, adjustedRanks: [], reason: invalidReason });
+      audits.push({ rowNumber: ballot.rowNumber, emailAddress: cellText(ballot.emailAddress), status: 'invalid', multiplier: 1, ranks, adjustedRanks: [], reason: invalidReason });
       continue;
     }
 
@@ -104,7 +106,7 @@ export function countVotes(ballots: RawBallot[], options: CountOptions): CountRe
       if (isExecutive) executivePoints[index] += value * multiplier;
       else regularPoints[index] += value;
     });
-    audits.push({ rowNumber: ballot.rowNumber, status: 'valid', multiplier, ranks, adjustedRanks, warning });
+    audits.push({ rowNumber: ballot.rowNumber, emailAddress: cellText(ballot.emailAddress), status: 'valid', multiplier, ranks, adjustedRanks, warning });
   }
 
   const sorted = candidateNames.map((name, index) => ({ name, index, total: totals[index] })).sort((a, b) => a.total - b.total || a.name.localeCompare(b.name));

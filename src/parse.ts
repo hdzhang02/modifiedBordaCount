@@ -3,7 +3,7 @@ import type { RawBallot } from './borda';
 
 export interface ColumnOption { index: number; label: string; }
 export interface CandidateColumn { name: string; index: number; }
-export interface ColumnMapping { candidates: CandidateColumn[]; noVoteIndex?: number; executiveKeyIndex?: number; }
+export interface ColumnMapping { candidates: CandidateColumn[]; emailAddressIndex?: number; noVoteIndex?: number; executiveKeyIndex?: number; }
 export interface ImportedSheet { sheetName: string; headers: string[]; rows: unknown[][]; columnOptions: ColumnOption[]; mapping: ColumnMapping; }
 
 const text = (value: unknown): string => String(value ?? '').trim();
@@ -22,13 +22,15 @@ export function detectMapping(headers: string[]): ColumnMapping {
   const candidates: CandidateColumn[] = [];
   let noVoteIndex: number | undefined;
   let executiveKeyIndex: number | undefined;
+  let emailAddressIndex: number | undefined;
   headers.forEach((header, index) => {
     const candidate = header.match(/(?:rank(?:ing)?\s+(?:for|of)|ranking\s*[-:]?)\s*(.+)$/i);
     if (candidate?.[1] && !/no vote/i.test(header)) candidates.push({ name: candidate[1].trim(), index });
     if (/no vote/i.test(header)) noVoteIndex = index;
     if (/(?:confidential\s+)?(?:key|password)|executive officer/i.test(header)) executiveKeyIndex = index;
+    if (/e-?mail(?:\s+address)?/i.test(header)) emailAddressIndex = index;
   });
-  return { candidates, noVoteIndex, executiveKeyIndex };
+  return { candidates, emailAddressIndex, noVoteIndex, executiveKeyIndex };
 }
 
 export function createBallots(sheet: ImportedSheet, mapping: ColumnMapping): RawBallot[] {
@@ -37,6 +39,7 @@ export function createBallots(sheet: ImportedSheet, mapping: ColumnMapping): Raw
     .filter(({ row }) => mapping.candidates.some(({ index }) => text(row[index]) !== '') || (mapping.noVoteIndex !== undefined && text(row[mapping.noVoteIndex]) !== ''))
     .map(({ row, rowNumber }) => ({
       rowNumber,
+      emailAddress: mapping.emailAddressIndex === undefined ? '' : text(row[mapping.emailAddressIndex]),
       ranks: mapping.candidates.map(({ index }) => text(row[index])),
       noVoteValue: mapping.noVoteIndex === undefined ? '' : text(row[mapping.noVoteIndex]),
       executiveKey: mapping.executiveKeyIndex === undefined ? '' : text(row[mapping.executiveKeyIndex]),
