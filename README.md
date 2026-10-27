@@ -91,6 +91,8 @@ The tool displays:
 - how many ballots placed each candidate at each rank;
 - the number of valid, doubled Executive, No Vote, and invalid ballots.
 
+Despite this, it's still worth checking and ensuring that these balloted values line up with your expectations.
+
 ### Warnings to review
 
 Read the yellow **Review required** section before accepting a result.
