@@ -128,3 +128,9 @@ You can open the CSV in Microsoft Excel, Google Sheets, LibreOffice Calc, or sim
 6. Calculate the result.
 7. Review warnings and the ballot audit.
 8. Download and securely keep the results CSV.
+
+## Contribution & Attributions
+
+This project was built on the information in the AUSCO Constitution for 2026. Should any procedures or clause change, please contact Danny for updates!
+
+Built with the Cline harness, Opus 5.5 (Plan), and GPT 5.6 Terra (Act). The context and files used to build the project is included with the repository, and can be referenced again by an LLM model through the memory-bank.
