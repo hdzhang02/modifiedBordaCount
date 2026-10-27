@@ -64,6 +64,7 @@ The counter normally detects the columns automatically. Check the following befo
 - Each candidate’s **Ranking column** matches their ranking question.
 - The **No Vote column** points to the form question used for “No Vote”.
 - The **Executive key column** points to the confidential-key question.
+- The **Email address column** points to the voter email field. It is normally detected from either an `Email Address` or `Username` heading.
 
 If a name or column is wrong, use the boxes and drop-down lists to correct it. Every candidate must have a different ranking column.
 

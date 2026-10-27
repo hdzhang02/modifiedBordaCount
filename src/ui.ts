@@ -2,7 +2,6 @@ import { countVotes, type CountResult } from './borda';
 import { createBallots, readSpreadsheet, type ColumnMapping, type ImportedSheet } from './parse';
 
 let sheets: ImportedSheet[] = [];
-let activeSheet = 0;
 let mapping: ColumnMapping | undefined;
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
@@ -18,7 +17,7 @@ async function loadFile(event: Event): Promise<void> {
   try {
     sheets = readSpreadsheet(await file.arrayBuffer());
     if (!sheets.length) throw new Error('The spreadsheet does not contain a readable worksheet.');
-    activeSheet = 0; mapping = structuredClone(sheets[0].mapping); renderWorkspace();
+    mapping = structuredClone(sheets[0].mapping); renderWorkspace();
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unable to read this spreadsheet.';
     showError(/Encrypted file/.test(message) ? 'This file appears to be an unsupported encrypted or legacy Excel file. In Google Sheets, use File → Download → Microsoft Excel (.xlsx), or download it as CSV, then try again.' : message);
@@ -26,17 +25,16 @@ async function loadFile(event: Event): Promise<void> {
 }
 
 function renderWorkspace(): void {
-  const sheet = sheets[activeSheet];
+  const sheet = sheets[0];
   const workspace = document.querySelector<HTMLDivElement>('#workspace')!;
-  workspace.innerHTML = `<section class="card"><h2>2. Check imported columns</h2>${sheets.length > 1 ? `<label>Worksheet <select id="sheet-select">${sheets.map((item, index) => `<option value="${index}" ${index === activeSheet ? 'selected' : ''}>${escapeHtml(item.sheetName)}</option>`).join('')}</select></label>` : `<p class="muted">Worksheet: <strong>${escapeHtml(sheet.sheetName)}</strong></p>`}<div id="mapping"></div></section><section class="card"><h2>3. Count settings</h2><div class="settings"><label>Executive password <span class="help">Only a matching key doubles a ballot.</span><div class="password-wrap"><input id="executive-password" type="password" autocomplete="off" /><button id="toggle-password" type="button" class="secondary">Show</button></div></label><label>Number provisionally nominated<input id="nominee-count" type="number" min="1" value="3" /></label></div><button id="count" class="primary" type="button">Calculate ranked result</button></section><div id="result"></div>`;
-  document.querySelector<HTMLSelectElement>('#sheet-select')?.addEventListener('change', (event) => { activeSheet = Number((event.target as HTMLSelectElement).value); mapping = structuredClone(sheets[activeSheet].mapping); renderWorkspace(); });
+  workspace.innerHTML = `<section class="card"><h2>2. Check imported columns</h2><p class="muted">Imported worksheet: <strong>${escapeHtml(sheet.sheetName || 'Unnamed worksheet')}</strong></p><div id="mapping"></div></section><section class="card"><h2>3. Count settings</h2><div class="settings"><label>Executive password <span class="help">Only a matching key doubles a ballot.</span><div class="password-wrap"><input id="executive-password" type="password" autocomplete="off" /><button id="toggle-password" type="button" class="secondary">Show</button></div></label><label>Number provisionally nominated<input id="nominee-count" type="number" min="1" value="3" /></label></div><button id="count" class="primary" type="button">Calculate ranked result</button></section><div id="result"></div>`;
   document.querySelector<HTMLButtonElement>('#toggle-password')!.addEventListener('click', togglePassword);
   document.querySelector<HTMLButtonElement>('#count')!.addEventListener('click', calculate);
   renderMapping();
 }
 
 function renderMapping(): void {
-  const sheet = sheets[activeSheet]; if (!mapping) return;
+  const sheet = sheets[0]; if (!mapping) return;
   const htmlOptions = (selected?: number, allowBlank = false) => `${allowBlank ? '<option value="">Not present</option>' : ''}${sheet.columnOptions.map((option) => `<option value="${option.index}" ${option.index === selected ? 'selected' : ''}>${escapeHtml(option.label)}</option>`).join('')}`;
   document.querySelector<HTMLDivElement>('#mapping')!.innerHTML = `<p class="muted">Candidate columns were detected from question headings. Correct any detection before counting.</p><div class="candidate-map">${mapping.candidates.map((candidate, index) => `<label>Candidate name<input data-candidate-name="${index}" value="${escapeAttribute(candidate.name)}" /></label><label>Ranking column<select data-candidate-column="${index}">${htmlOptions(candidate.index)}</select></label>`).join('')}</div><div class="settings"><label>Email address column<select id="email-column">${htmlOptions(mapping.emailAddressIndex, true)}</select></label><label>No Vote column<select id="no-vote-column">${htmlOptions(mapping.noVoteIndex, true)}</select></label><label>Executive key column<select id="key-column">${htmlOptions(mapping.executiveKeyIndex, true)}</select></label></div>`;
 }
@@ -56,7 +54,7 @@ function togglePassword(): void { const input = document.querySelector<HTMLInput
 function calculate(): void {
   try {
     const selectedMapping = currentMapping(); const nominees = Number(document.querySelector<HTMLInputElement>('#nominee-count')!.value);
-    const result = countVotes(createBallots(sheets[activeSheet], selectedMapping), { candidateNames: selectedMapping.candidates.map(({ name }) => name), executivePassword: document.querySelector<HTMLInputElement>('#executive-password')!.value, nomineesToSelect: nominees });
+    const result = countVotes(createBallots(sheets[0], selectedMapping), { candidateNames: selectedMapping.candidates.map(({ name }) => name), executivePassword: document.querySelector<HTMLInputElement>('#executive-password')!.value, nomineesToSelect: nominees });
     renderResult(result); window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   } catch (error) { showError(error instanceof Error ? error.message : 'The count could not be calculated.'); }
 }

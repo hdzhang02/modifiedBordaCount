@@ -14,7 +14,7 @@ export function readSpreadsheet(data: ArrayBuffer): ImportedSheet[] {
     const rows = XLSX.utils.sheet_to_json<unknown[]>(workbook.Sheets[sheetName], { header: 1, defval: '', raw: false });
     const headers = (rows[0] ?? []).map(text);
     const columnOptions = headers.map((header, index) => ({ index, label: `${excelColumn(index)} — ${header || '(blank header)'}` }));
-    return { sheetName, headers, rows: rows.slice(1), columnOptions, mapping: detectMapping(headers) };
+    return { sheetName: sheetName.trim(), headers, rows: rows.slice(1), columnOptions, mapping: detectMapping(headers) };
   });
 }
 
@@ -28,7 +28,7 @@ export function detectMapping(headers: string[]): ColumnMapping {
     if (candidate?.[1] && !/no vote/i.test(header)) candidates.push({ name: candidate[1].trim(), index });
     if (/no vote/i.test(header)) noVoteIndex = index;
     if (/(?:confidential\s+)?(?:key|password)|executive officer/i.test(header)) executiveKeyIndex = index;
-    if (/e-?mail(?:\s+address)?/i.test(header)) emailAddressIndex = index;
+    if (/e-?mail(?:\s+address)?|username/i.test(header)) emailAddressIndex = index;
   });
   return { candidates, emailAddressIndex, noVoteIndex, executiveKeyIndex };
 }
