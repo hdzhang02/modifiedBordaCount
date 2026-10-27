@@ -11,7 +11,7 @@
 - Plain-English operator instructions are available in the root `README.md`.
 - Branding and usability updates: AU Student Chamber Orchestra presidential-tool heading and a post-result reload/reset note.
 - Added responsive AUSCO horizontal logo branding and Email Address visibility in the local ballot audit.
-- Simplified worksheet handling to first-sheet-only with its correct name displayed; added `Username` as an email-column detection alias.
+- Simplified worksheet handling to first-sheet-only with a clear fixed reminder; added `Username` as an email-column detection alias.
 
 ## In progress
 None.

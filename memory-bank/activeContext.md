@@ -23,4 +23,4 @@ None required for the first implementation.
 - `README.md` is written for non-technical election officers and documents downloading Google Sheets responses, using `dist/index.html`, reviewing warnings, and exporting results.
 - Header branding now names the Auckland University Student Chamber Orchestra Incorporated Presidential Voting Tool in blue. Results include a reload instruction for starting a new count.
 - The offline header embeds `src/AUSCO_horizontal_logo.png`, displayed beside the title on wider screens and above it on narrow screens. Email Address is now auto-detected and shown in the local ballot audit for sheet cross-checking.
-- The tool now shows the first imported worksheet's exact name as a non-interactive indicator. `Username` is also recognised as an email-address column for Google Forms exports.
+- The tool uses the first imported worksheet and gives a fixed reminder to ensure the response results are stored in that tab; it does not display a worksheet name. `Username` is also recognised as an email-address column for Google Forms exports.

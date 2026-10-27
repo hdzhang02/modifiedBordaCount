@@ -25,9 +25,8 @@ async function loadFile(event: Event): Promise<void> {
 }
 
 function renderWorkspace(): void {
-  const sheet = sheets[0];
   const workspace = document.querySelector<HTMLDivElement>('#workspace')!;
-  workspace.innerHTML = `<section class="card"><h2>2. Check imported columns</h2><p class="muted">Imported worksheet: <strong>${escapeHtml(sheet.sheetName || 'Unnamed worksheet')}</strong></p><div id="mapping"></div></section><section class="card"><h2>3. Count settings</h2><div class="settings"><label>Executive password <span class="help">Only a matching key doubles a ballot.</span><div class="password-wrap"><input id="executive-password" type="password" autocomplete="off" /><button id="toggle-password" type="button" class="secondary">Show</button></div></label><label>Number provisionally nominated<input id="nominee-count" type="number" min="1" value="3" /></label></div><button id="count" class="primary" type="button">Calculate ranked result</button></section><div id="result"></div>`;
+  workspace.innerHTML = `<section class="card"><h2>2. Check imported columns</h2><p class="muted"><strong>First tab of spreadsheet is loaded — ensure results are stored there.</strong></p><div id="mapping"></div></section><section class="card"><h2>3. Count settings</h2><div class="settings"><label>Executive password <span class="help">Only a matching key doubles a ballot.</span><div class="password-wrap"><input id="executive-password" type="password" autocomplete="off" /><button id="toggle-password" type="button" class="secondary">Show</button></div></label><label>Number provisionally nominated<input id="nominee-count" type="number" min="1" value="3" /></label></div><button id="count" class="primary" type="button">Calculate ranked result</button></section><div id="result"></div>`;
   document.querySelector<HTMLButtonElement>('#toggle-password')!.addEventListener('click', togglePassword);
   document.querySelector<HTMLButtonElement>('#count')!.addEventListener('click', calculate);
   renderMapping();

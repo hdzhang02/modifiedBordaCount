@@ -52,6 +52,8 @@ There is no sign-in and no internet connection is required after you have the fi
 2. Select the `.xlsx` or `.csv` file you downloaded from Google Sheets.
 3. The counter will read the file on your computer and show the column choices.
 
+The counter always uses the **first tab** of a spreadsheet. Ensure the response data you want to count is stored on that tab before downloading the file.
+
 ### If the file will not open
 
 Download it again directly from Google Sheets using **File → Download → Microsoft Excel (.xlsx)** or **Comma-separated values (.csv)**. Some old or renamed Excel files cannot be read by browsers even though Microsoft Excel can open them.
